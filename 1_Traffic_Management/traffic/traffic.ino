@@ -17,8 +17,11 @@ const int yellow4 = 15;
 const int red4 = 16;
 
 
-const int btnHorizontal = 19;
-const int btnVertical = A0;
+const int irHorizontal = A0;
+const int irVertical = A1;
+
+int irValVertical = HIGH;
+int irValHorizontal = HIGH;
 
 unsigned long waitTime = 0;
 unsigned long currentTime = 0;
@@ -39,30 +42,55 @@ void setup() {
   pinMode(yellowHorizontal2,  OUTPUT);
   pinMode(redHorizontal2,  OUTPUT);
 
-
   pinMode(green3,  OUTPUT);
   pinMode(yellow3,  OUTPUT);
   pinMode(red3,  OUTPUT);
 
-
   pinMode(green4,  OUTPUT);
   pinMode(yellow4,  OUTPUT);
   pinMode(red4,  OUTPUT);
-
-
-  pinMode(redHorizontal2,  OUTPUT);
-  pinMode(redHorizontal2,  OUTPUT);
-
-
-  pinMode(btnVertical,  INPUT);
-  pinMode(btnHorizontal,  INPUT);
-
 
   Serial.begin(9600);
 
 }
 
 void loop() {
+
+  irValHorizontal = digitalRead(irHorizontal);
+  if (irValHorizontal == LOW) {
+
+
+    Serial.println("Ambulance Detected in Horizontal.");
+
+    waitTime = 0;
+
+    horizontalGo = false;
+    horizontalWait = true;
+    verticalGo = true;
+    verticalWait = true;
+
+    goHorizontal();
+
+  }
+
+
+  irValVertical = digitalRead(irVertical);
+  if (irValVertical == LOW) {
+
+
+    Serial.println("Ambulance Detected in Vertical.");
+
+    waitTime = 0;
+
+    horizontalGo = true;
+    horizontalWait = true;
+    verticalGo = false;
+    verticalWait = true;
+
+    goVertical();
+
+  }
+
 
   if (horizontalGo == false) {
     goHorizontal();
