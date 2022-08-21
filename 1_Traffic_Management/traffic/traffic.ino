@@ -19,9 +19,13 @@ const int red4 = 16;
 
 const int irHorizontal = A0;
 const int irVertical = A1;
-
 int irValVertical = HIGH;
 int irValHorizontal = HIGH;
+
+
+boolean detectHorizontal = false;
+boolean detectVertical = false;
+
 
 unsigned long waitTime = 0;
 unsigned long currentTime = 0;
@@ -57,7 +61,7 @@ void setup() {
 void loop() {
 
   irValHorizontal = digitalRead(irHorizontal);
-  if (irValHorizontal == LOW) {
+  if (irValHorizontal == LOW && detectHorizontal == false && detectVertical == false) {
 
 
     Serial.println("Ambulance Detected in Horizontal.");
@@ -70,12 +74,13 @@ void loop() {
     verticalWait = true;
 
     goHorizontal();
+    detectHorizontal = true;
 
   }
 
 
   irValVertical = digitalRead(irVertical);
-  if (irValVertical == LOW) {
+  if (irValVertical == LOW && detectVertical == false && detectHorizontal == false) {
 
 
     Serial.println("Ambulance Detected in Vertical.");
@@ -88,6 +93,7 @@ void loop() {
     verticalWait = true;
 
     goVertical();
+    detectVertical = true;
 
   }
 
@@ -111,19 +117,18 @@ void loop() {
     waitVertical();
   }
 
-
-
-
-
+  detectHorizontal = false;
+  detectVertical = false;
 }
 
 
 void goHorizontal() {
 
+
   if (waitTime == 0UL) {
     waitTime = millis();
 
-
+    Serial.println(" ");
     Serial.println("Go Horizontal.");
 
     digitalWrite(greenHorizontal1, HIGH);
@@ -151,10 +156,6 @@ void goHorizontal() {
 
     if ((currentTime - waitTime) > 5000UL) {
 
-
-      Serial.println("Horizontal Done.");
-
-
       waitTime = 0;
 
       horizontalGo = true;
@@ -167,8 +168,10 @@ void goHorizontal() {
 
 void waitHorizontal() {
 
+
   if (waitTime == 0UL) {
 
+    Serial.println(" ");
     Serial.println("Wait Horizontal.");
 
     waitTime = millis();
@@ -188,10 +191,6 @@ void waitHorizontal() {
 
     if ((currentTime - waitTime) > 3000UL) {
 
-
-      Serial.println("Wait Horizontal Done.");
-
-
       waitTime = 0;
 
       horizontalGo = true;
@@ -206,11 +205,11 @@ void waitHorizontal() {
 
 void waitVertical() {
 
-
   if (waitTime == 0UL) {
     waitTime = millis();
 
 
+    Serial.println(" ");
     Serial.println("Wait Vertical.");
 
     digitalWrite(yellow3, HIGH);
@@ -225,10 +224,6 @@ void waitVertical() {
     currentTime = millis();
 
     if ((currentTime - waitTime) > 3000UL) {
-
-
-      Serial.println("Wait Vertical Done.");
-
 
       waitTime = 0;
 
@@ -247,6 +242,7 @@ void goVertical() {
   if (waitTime == 0UL) {
     waitTime = millis();
 
+    Serial.println(" ");
     Serial.println("Go Vertical.");
 
     digitalWrite(greenHorizontal1, LOW);
@@ -274,10 +270,6 @@ void goVertical() {
     currentTime = millis();
 
     if ((currentTime - waitTime) > 5000UL) {
-
-
-      Serial.println("Horizontal Done.");
-
 
       waitTime = 0;
 
