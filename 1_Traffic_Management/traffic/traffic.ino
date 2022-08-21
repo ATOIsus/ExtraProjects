@@ -140,13 +140,11 @@ void goHorizontal() {
     digitalWrite(redHorizontal1, LOW);
     digitalWrite(redHorizontal2, LOW);
 
-
     digitalWrite(green3, LOW);
     digitalWrite(green4, LOW);
 
     digitalWrite(red3, HIGH);
     digitalWrite(red4, HIGH);
-
 
     digitalWrite(yellow3, LOW);
     digitalWrite(yellow4, LOW);
@@ -176,11 +174,9 @@ void waitHorizontal() {
 
     waitTime = millis();
 
-
     digitalWrite(yellowHorizontal1, HIGH);
     digitalWrite(greenHorizontal1, LOW);
     digitalWrite(redHorizontal1, LOW);
-
 
     digitalWrite(yellowHorizontal2, HIGH);
     digitalWrite(greenHorizontal2, LOW);
@@ -254,7 +250,6 @@ void goVertical() {
     digitalWrite(redHorizontal1, HIGH);
     digitalWrite(redHorizontal2, HIGH);
 
-
     digitalWrite(green3, HIGH);
     digitalWrite(green4, HIGH);
 
@@ -263,7 +258,6 @@ void goVertical() {
 
     digitalWrite(yellow3, LOW);
     digitalWrite(yellow4, LOW);
-
 
 
   } else {
