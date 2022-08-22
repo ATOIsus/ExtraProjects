@@ -1,0 +1,10 @@
+
+1) To create environment:   python -m venv env
+
+2) Create environment:      env\Scripts\activate
+
+3) Install tensorflow:      pip install tensorflow
+
+4) Install OpenCV:          pip install opencv-python
+
+5) Run application:         python -m DetectObject.py
