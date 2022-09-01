@@ -16,7 +16,8 @@ while True:
     current_time = now.strftime("%H:%M:%S")
     print("Current Time =", current_time)
 
-    if current_time == "12:27:09":
-        for i in range(0,2):
+    if current_time == "12:41:00":
+        for i in range(0,4):
+            sleep(1.5)
             me.takeoff()
             me.land()
