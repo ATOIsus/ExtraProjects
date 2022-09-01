@@ -5,8 +5,8 @@ import math
 
 import os
 
-FRAME_WIDTH = 1000
-FRAME_HEIGHT = 1000
+FRAME_WIDTH = 700
+FRAME_HEIGHT = 700
 
 print("[INFO] Starting streaming...")
 # pipeline.start(config)
@@ -74,7 +74,7 @@ import time
 ######################################################################
 width = 1000  # WIDTH OF THE IMAGE
 height = 1000  # HEIGHT OF THE IMAGE
-startCounter = 1  # 0 FOR FIGHT 1 FOR TESTING
+startCounter = 177  # 0 FOR FIGHT 1 FOR TESTING
 ######################################################################
 
 # CONNECT TO TELLO

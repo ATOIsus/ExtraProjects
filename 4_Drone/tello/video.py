@@ -36,13 +36,13 @@ while True:
     # DISPLAY IMAGE
     cv2.imshow("MyResult", img)
 
-    if startCounter == 1:
+    if startCounter == 7:
         me.takeoff()
 
         me.send_rc_control(0, 0, 0, 0)
         time.sleep(1)
 
-        me.send_rc_control(0, 5, 0, 0)
+        me.send_rc_control(0, 15, 0, 0)
         time.sleep(2)
 
         startCounter = 2
