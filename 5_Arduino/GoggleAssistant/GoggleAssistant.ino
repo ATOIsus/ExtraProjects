@@ -1,102 +1,144 @@
+
 #include <ESP8266WiFi.h>
 #include "Adafruit_MQTT.h"
 #include "Adafruit_MQTT_Client.h"
 
-#define Relay1            D1
+#define WIFI_SSID "IOT"  //Your wifi name
+#define WIFI_PASS "cecurity"//your wifi password
 
-#define WLAN_SSID       "vivo 1907"             // Your SSID
-#define WLAN_PASS       "bini@123"        // Your password
+#define MQTT_SERV "io.adafruit.com"
+#define MQTT_PORT 1883
+#define MQTT_NAME "SmthOnee" //Your adafruit name
+#define MQTT_PASS "aio_ltJB275jGGkj4HcXDWaJH376LLT0" //Your adafruit AIO key
 
-/************************* Adafruit.io Setup *********************************/
 
-#define AIO_SERVER      "io.adafruit.com"
-#define AIO_SERVERPORT  1883                   // use 8883 for SSL
-#define AIO_USERNAME    "SmthOnee"            // Replace it with your username
-#define AIO_KEY         "aio_sXWn15h2DtmudbyXdzO35xluid2b"   // Replace with your Project Auth Key
 
-/************ Global State (you don't need to change this!) ******************/
 
-// Create an ESP8266 WiFiClient class to connect to the MQTT server.
+
+int led = D7;
+
 WiFiClient client;
-// or... use WiFiFlientSecure for SSL
-//WiFiClientSecure client;
+Adafruit_MQTT_Client mqtt(&client, MQTT_SERV, MQTT_PORT, MQTT_NAME, MQTT_PASS);
 
-// Setup the MQTT client class by passing in the WiFi client and MQTT server and login details.
-Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
-
-/****************************** Feeds ***************************************/
+Adafruit_MQTT_Subscribe Lights = Adafruit_MQTT_Subscribe(&mqtt, MQTT_NAME "/f/Relay1");
+Adafruit_MQTT_Publish LightsStatus = Adafruit_MQTT_Publish(&mqtt, MQTT_NAME "/f/Relay1");
 
 
-// Setup a feed called 'onoff' for subscribing to changes.
-Adafruit_MQTT_Subscribe Light1 = Adafruit_MQTT_Subscribe(&mqtt, AIO_USERNAME"/feeds/Relay1"); // FeedName
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(LED_BUILTIN, OUTPUT);
 
-void MQTT_connect();
 
-void setup() {
-  Serial.begin(115200);
+  //Connect to WiFi
+  Serial.print("\n\nConnecting Wifi>");
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
+  digitalWrite(LED_BUILTIN, LOW);
 
-  pinMode(Relay1, OUTPUT);
-
-  // Connect to WiFi access point.
-  Serial.println(); Serial.println();
-  Serial.print("Connecting to ");
-  Serial.println(WLAN_SSID);
-
-  WiFi.begin(WLAN_SSID, WLAN_PASS);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    Serial.print(">");
+    delay(50);
   }
-  Serial.println();
 
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
+  Serial.println("OK!");
 
+  //Subscribe to the Lights topic
+  mqtt.subscribe(&Lights);
 
-  // Setup MQTT subscription for onoff feed.
-  mqtt.subscribe(&Light1);
+  pinMode(led, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
+  digitalWrite(led, LOW);
+
 }
 
-void loop() {
+void loop()
 
+
+{
+
+  digitalWrite(led, LOW);
+  delay(200);
+
+
+  digitalWrite(led, HIGH);
+  delay(200);
+
+
+  
+  //Connect/Reconnect to MQTT
   MQTT_connect();
 
-  Adafruit_MQTT_Subscribe *subscription;
-  while ((subscription = mqtt.readSubscription(5000))) {
-    if (subscription == &Light1) {
-      Serial.print(F("Got: "));
-      Serial.println((char *)Light1.lastread);
-      int Light1_State = atoi((char *)Light1.lastread);
-      digitalWrite(Relay1, !(Light1_State));
+  //Read from our subscription queue until we run out, or
+  //wait up to 5 seconds for subscription to update
+  Adafruit_MQTT_Subscribe * subscription;
+  while ((subscription = mqtt.readSubscription(5000)))
+  {
+    //If we're in here, a subscription updated...
+    if (subscription == &Lights)
+    {
+      //Print the new value to the serial monitor
+      Serial.print("Lights: ");
+      Serial.println((char*) Lights.lastread);
 
+      //If the new value is  "ON", turn the light on.
+      //Otherwise, turn it off.
+      if (!strcmp((char*) Lights.lastread, "ON"))
+      {
+        //active low logic
+        digitalWrite(led, HIGH);
+        LightsStatus.publish("ON");
+      }
+      else if (!strcmp((char*) Lights.lastread, "OFF"))
+      {
+        digitalWrite(led, LOW);
+        LightsStatus.publish("OFF");
+
+      }
+      else
+      {
+        LightsStatus.publish("ERROR");
+      }
+    }
+    else
+    {
+      //LightsStatus.publish("ERROR");
     }
   }
+  //  if (!mqtt.ping())
+  //  {
+  //    mqtt.disconnect();
+  //  }
 }
 
-void MQTT_connect() {
-  int8_t ret;
 
-  // Stop if already connected.
-  if (mqtt.connected()) {
+void MQTT_connect()
+{
+
+  //  // Stop if already connected
+  if (mqtt.connected() && mqtt.ping())
+  {
+    //    mqtt.disconnect();
     return;
   }
 
+  int8_t ret;
+
+  mqtt.disconnect();
+
   Serial.print("Connecting to MQTT... ");
-
   uint8_t retries = 3;
-
-  while ((ret = mqtt.connect()) != 0) { // connect will return 0 for connected
+  while ((ret = mqtt.connect()) != 0) // connect will return 0 for connected
+  {
     Serial.println(mqtt.connectErrorString(ret));
     Serial.println("Retrying MQTT connection in 5 seconds...");
     mqtt.disconnect();
     delay(5000);  // wait 5 seconds
     retries--;
-    if (retries == 0) {
-      // basically die and wait for WDT to reset me
-      while (1);
+    if (retries == 0)
+    {
+      ESP.reset();
     }
   }
   Serial.println("MQTT Connected!");
-
 }

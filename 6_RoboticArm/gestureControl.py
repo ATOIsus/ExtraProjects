@@ -19,7 +19,7 @@ cap.set(10, brightnessImage)
 cap.set(3, frameWidth)
 cap.set(4, frameHeight)
 utlis.initializeTrackBar()
-#utlis.connectToRobot(portNo)
+utlis.connectToRobot(portNo)
 
 while True:
     _, img = cap.read()

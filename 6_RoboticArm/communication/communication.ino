@@ -24,11 +24,11 @@ bool portable;
 void setup() {
 
   Serial.begin(9600);
-  servothumb.attach(9);
-  servoindex.attach(10);
-  servopinky.attach(11);
-  servoring.attach(12);
-  servomiddle.attach(13);
+  servothumb.attach(2);
+  servoindex.attach(3);
+  servopinky.attach(4);
+  servoring.attach(5);
+  servomiddle.attach(6);
   myButton = analogRead(A0);
   delay(500);
   if (myButton == 0) {
