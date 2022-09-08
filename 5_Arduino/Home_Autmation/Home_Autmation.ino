@@ -31,8 +31,8 @@ void thirdLightChanged(uint8_t brightness);
 void fourthLightChanged(uint8_t brightness);
 
 // WiFi Credentials
-const char* ssid = "IOT";
-const char* password = "cecurity";
+const char* ssid = "Connectify-me";
+const char* password = "shrawan1234";
 
 // device names
 String Device_1_Name = "Study Lamp";

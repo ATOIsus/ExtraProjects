@@ -31,12 +31,8 @@ void setup() {
   servomiddle.attach(6);
   myButton = analogRead(A0);
   delay(500);
-  if (myButton == 0) {
-    portable = false;
-  }
-  else {
-    portable = true;
-  }
+
+  portable = false;
 
 }
 

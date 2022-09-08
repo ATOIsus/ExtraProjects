@@ -34,12 +34,8 @@ def getTrackbarValues():
 
 def connectToRobot(portNo):
     global ser
-    try:
-        ser = serial.Serial(portNo, 9600)
-        print("Robot Connected ")
-    except:
-        print("Not Connected To Robot ")
-        pass
+
+    ser  = serial.Serial("com29", 9600)
 
 
 def colorFilter(img, vals):
@@ -101,19 +97,25 @@ def getContours(imgCon, imgMatch):
             ## SENDING COMMANDS BASED ON FINGERS
             if (myCounter == 4):
                 sendData([1, 1, 1, 1, 1]);FingerCount = "Five"
+                #print(5, " fingers")
             elif (myCounter == 3):
                 sendData([1, 1, 1, 1, 0]);FingerCount = "Four"
+                #print(4, " fingers")
             elif (myCounter == 2):
                 sendData([0, 1, 1, 1, 0]);FingerCount = "Three"
+                #print(3, " fingers")
             elif (myCounter == 1):
                 sendData([0, 0, 1, 1, 0]);FingerCount = "Two"
+                #print(2, " fingers")
             elif (myCounter == 0):
                 aspectRatio = w / h
                 if aspectRatio < 0.6:
                     sendData([0, 0, 0, 1, 0]);
                     FingerCount = "One"
+                    #print(1, " fingers")
                 else:
                     sendData([0, 0, 0, 0, 0]);FingerCount = "Zero"
+                    #print(0, " fingers")
             cv2.putText(imgMatch, FingerCount, (50, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255), 2)
     return imgCon, imgMatch
 

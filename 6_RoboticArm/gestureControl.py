@@ -6,7 +6,7 @@ import utlis
 ##############################################################################
 
 cameraNo = 0
-portNo ="COM29"
+portNo ="com29"
 cropVals = 100, 100, 300, 400  # StartPointY StartPointX h w
 frameWidth = 640
 frameHeight = 480
