@@ -30,18 +30,19 @@ except BaseException as er1:
     quit()
 
 
-def insertData(val1, val2, val3, val4):
+def insertData(val1, val2, val3, val4, val5):
     """To insert data."""
 
     try:
         # To insert data.
-        # dictionaryData = {"Name" : "Data", "Value1": val1, "Value2": val2, "Value3": val3, "Value4": val4}
+        # dictionaryData = {"Name" : "Data", "Turbity Value": val1, "DHT Value": val2, "PO Value": val3, "T1 Value": val4, "T2 Value": val5}
         # documentCollection.insert_one(dictionaryData)
+        # quit()
             
 
         #To update data.
         identifyDocument = {"Name": "Data"}
-        updateData = {"$set": {"Value1": val1, "Value2": val2, "Value3": val3, "Value4": val4}}
+        updateData = {"$set": {"Turbity Value": val1, "DHT Value": val2, "PO Value": val3, "T1 Value": val4, "T2 Value": val5}}
         documentCollection.update_one(identifyDocument, updateData)
 
     except BaseException as er2:
@@ -71,15 +72,16 @@ def readData():
             arrValues = decodedValues.split("$")
             # To decode the data. The value will be in string.
 
-            val = arrValues[1]
+            val  = arrValues[1]
             val2 = arrValues[2]
             val3 = arrValues[3]
             val4 = arrValues[4]
+            val5 = arrValues[5]
             
 
-            print("Value1", val, ", Value2", val2, ", Value3", val3, ", Value4", val4)
+            print("Value1", val, ", Value2", val2, ", Value3", val3, ", Value4", val4,  " ,Value5", val5)
 
-            insertData(val, val2, val3, val4)  # Pass data(in Integer form) to the MongoDB.
+            insertData(val, val2, val3, val4, val5)  # Pass data(in Integer form) to the MongoDB.
 
             time.sleep(1)  # To pause the program for 1 second.
 
