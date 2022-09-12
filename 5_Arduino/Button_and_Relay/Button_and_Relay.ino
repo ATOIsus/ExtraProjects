@@ -1,8 +1,8 @@
 
-int smth = D0;
-int smth1 = D1;
-int smth2 = D2;
-int smth3 = D3;
+int smth = 2;
+int smth1 = 3;
+int smth2 = 4;
+int smth3 = 5;
 
 #define SwitchPin1 10  //SD3
 
@@ -15,7 +15,7 @@ void setup() {
   pinMode(SwitchPin1, INPUT);
   
   
-  pinMode(D4, OUTPUT);
+  pinMode(6, OUTPUT);
 }
 
 void loop() {
