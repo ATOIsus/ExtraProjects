@@ -31,7 +31,7 @@ int moistureValue;
 #define AIO_SERVERPORT  1883
 
 #define AIO_USERNAME    "SmthOnee"   // Your Adafruit IO Username
-#define AIO_KEY    "aio_InAz81w76jGFarzWJ0pvOmxTMCYT" // Adafruit IO AIO key
+#define AIO_KEY    "aio_HQQU37od5QpaThsHvdfvN1jjwAUA" // Adafruit IO AIO key
 
 
 WiFiClient client;
@@ -40,8 +40,13 @@ WiFiClient client;
 // Setup the MQTT client class by passing in the WiFi client and MQTT server and login details.
 Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
 
-Adafruit_MQTT_Subscribe LED = Adafruit_MQTT_Subscribe(&mqtt, AIO_USERNAME"/feeds/Relay3");
+Adafruit_MQTT_Subscribe LED = Adafruit_MQTT_Subscribe(&mqtt, AIO_USERNAME"/feeds/Relay1");
 //Adafruit_MQTT_Subscribe Motor = Adafruit_MQTT_Subscribe(&mqtt, AIO_USERNAME"/feeds/Relay4");
+
+Adafruit_MQTT_Publish Moisture = Adafruit_MQTT_Publish(&mqtt,AIO_USERNAME "/feeds/SoilMoisture"); 
+Adafruit_MQTT_Publish Temperature = Adafruit_MQTT_Publish(&mqtt,AIO_USERNAME "/feeds/Temperature");
+Adafruit_MQTT_Publish Humidity = Adafruit_MQTT_Publish(&mqtt,AIO_USERNAME "/feeds/Humidity");
+
 
 void MQTT_connect();
 
@@ -93,22 +98,25 @@ void loop() {
   }
 
 
-
   moistureValue = analogRead(moistureIn);
 
   dhtHumidity = dht.readHumidity();
   dhtTemp = dht.readTemperature();
 
+  Temperature.publish(dhtTemp);
+  Humidity.publish(dhtHumidity);
+  Moisture.publish(moistureValue);
+
   Serial.println((String)"Moisture Value: " + moistureValue  + " ,DHT Temp:  " + dhtTemp + " ,DHT Humidity:  " + dhtHumidity);
 
-  digitalWrite(relayMotor, HIGH);
-  digitalWrite(relayLight, HIGH);
-  delay(500);
-
-
-  digitalWrite(relayMotor, LOW);
-  digitalWrite(relayLight, LOW);
-  delay(500);
+//  digitalWrite(relayMotor, HIGH);
+//  digitalWrite(relayLight, HIGH);
+//  delay(500);
+//
+//
+//  digitalWrite(relayMotor, LOW);
+//  digitalWrite(relayLight, LOW);
+//  delay(500);
 
 }
 
