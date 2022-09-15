@@ -14,7 +14,9 @@ int DHTPIN = D3;
 DHT dht(DHTPIN, DHTTYPE);
 
 int relayMotor = D0;
-int relayLight = D1;
+
+int switchBtn = D1;
+int buttonState = LOW;
 
 int dhtIn = D3;
 float dhtTemp;
@@ -57,7 +59,7 @@ void setup()
   dht.begin();
 
   pinMode(relayMotor, OUTPUT);
-  pinMode(relayLight, OUTPUT);
+  pinMode(switchBtn, INPUT);
   pinMode(moistureIn, INPUT);
 
 
@@ -65,7 +67,7 @@ void setup()
   Serial.println(WLAN_SSID);
 
 
-  WiFi.begin(WLAN_SSID, WLAN_PASS);
+//  WiFi.begin(WLAN_SSID, WLAN_PASS);
 
   while (WiFi.status() != WL_CONNECTED)
   {
@@ -77,26 +79,16 @@ void setup()
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
 
-  // Setup MQTT subscription for onoff feed.
+// Setup MQTT subscription for onoff feed.
   mqtt.subscribe(&LED);
-  //      mqtt.subscribe(&Motor);
+  mqtt.subscribe(&Motor);
 
 }
+
+
 void loop() {
 
   MQTT_connect();
-
-  Adafruit_MQTT_Subscribe *subscription;
-  while ((subscription = mqtt.readSubscription(5000))) {
-    if (subscription == &LED) {
-      Serial.print(F("Got: "));
-      Serial.println((char *)LED.lastread);
-      int LED_State = atoi((char *)LED.lastread);
-      digitalWrite(relayMotor, !(LED_State));
-
-    }
-  }
-
 
   moistureValue = analogRead(moistureIn);
 
@@ -109,14 +101,14 @@ void loop() {
 
   Serial.println((String)"Moisture Value: " + moistureValue  + " ,DHT Temp:  " + dhtTemp + " ,DHT Humidity:  " + dhtHumidity);
 
-//  digitalWrite(relayMotor, HIGH);
-//  digitalWrite(relayLight, HIGH);
-//  delay(500);
-//
-//
-//  digitalWrite(relayMotor, LOW);
-//  digitalWrite(relayLight, LOW);
-//  delay(500);
+  buttonState = digitalRead(switchBtn);
+  if(buttonState == HIGH){
+    digitalWrite(relayMotor, HIGH);
+    delay(50);
+  }else{
+    digitalWrite(relayMotor, LOW);
+    delay(50);
+  }
 
 }
 
