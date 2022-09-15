@@ -15,7 +15,7 @@ sleep(1)
 
 
 #Move forward for 2 seconds with speed 10
-me.send_rc_control(0, 10, 0, 0)
+me.send_rc_control(0, 20, 0, 0)
 sleep(2)
 
 
