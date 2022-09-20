@@ -77,7 +77,6 @@ with tf.compat.v1.Session(graph=detection_graph) as sess:
 
         im_height, im_width, _ = img.shape
         print(im_height, im_width)
-        t = cv2.waitKey(2)
 
         image_expanded = np.expand_dims(img, axis=0)
         # Perform the actual detection by running the model with the image as input
@@ -109,7 +108,9 @@ with tf.compat.v1.Session(graph=detection_graph) as sess:
                             1, (255, 0, 0), 2, cv2.LINE_AA)
                 print(classes_90[class_])
 
-        if t == ord('q'):
+        key = cv2.waitKey(1) & 0xff        
+
+        if key == ord('q'):
             break
 
         cv2.imshow('output', img)
