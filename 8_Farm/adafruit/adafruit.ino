@@ -26,14 +26,14 @@ int moistureIn = A0;
 int moistureValue;
 
 
-#define WLAN_SSID     "IOT"     // replace with your wifi ssid and wpa2 key
-#define WLAN_PASS     "cecurity"
+#define WLAN_SSID     "ssid"     // replace with your wifi ssid and wpa2 key
+#define WLAN_PASS     "pass"
 
 #define AIO_SERVER      "io.adafruit.com"
 #define AIO_SERVERPORT  1883
 
 #define AIO_USERNAME    "SmthOnee"   // Your Adafruit IO Username
-#define AIO_KEY    "aio_HQQU37od5QpaThsHvdfvN1jjwAUA" // Adafruit IO AIO key
+#define AIO_KEY    "aio_ooWZ95n6UeQbMbbtdC2EnzEN0quc" // Adafruit IO AIO key
 
 
 WiFiClient client;
@@ -41,8 +41,8 @@ WiFiClient client;
 
 // Setup the MQTT client class by passing in the WiFi client and MQTT server and login details.
 Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
-
-Adafruit_MQTT_Subscribe LED = Adafruit_MQTT_Subscribe(&mqtt, AIO_USERNAME"/feeds/Relay1");
+//
+//Adafruit_MQTT_Subscribe LED = Adafruit_MQTT_Subscribe(&mqtt, AIO_USERNAME"/feeds/Relay1");
 //Adafruit_MQTT_Subscribe Motor = Adafruit_MQTT_Subscribe(&mqtt, AIO_USERNAME"/feeds/Relay4");
 
 Adafruit_MQTT_Publish Moisture = Adafruit_MQTT_Publish(&mqtt,AIO_USERNAME "/feeds/SoilMoisture"); 
@@ -63,6 +63,9 @@ void setup()
   pinMode(moistureIn, INPUT);
 
 
+  delay(5000);
+
+
   Serial.println("Connecting to ");
   Serial.println(WLAN_SSID);
 
@@ -80,8 +83,8 @@ void setup()
   Serial.println(WiFi.localIP());
 
 // Setup MQTT subscription for onoff feed.
-  mqtt.subscribe(&LED);
-  mqtt.subscribe(&Motor);
+  //mqtt.subscribe(&LED);
+  //mqtt.subscribe(&Motor);
 
 }
 
@@ -101,14 +104,14 @@ void loop() {
 
   Serial.println((String)"Moisture Value: " + moistureValue  + " ,DHT Temp:  " + dhtTemp + " ,DHT Humidity:  " + dhtHumidity);
 
-  buttonState = digitalRead(switchBtn);
-  if(buttonState == HIGH){
-    digitalWrite(relayMotor, HIGH);
-    delay(50);
-  }else{
-    digitalWrite(relayMotor, LOW);
-    delay(50);
-  }
+//  buttonState = digitalRead(switchBtn);
+//  if(buttonState == HIGH){
+//    digitalWrite(relayMotor, HIGH);
+//    delay(50);
+//  }else{
+//    digitalWrite(relayMotor, LOW);
+//    delay(50);
+//  }
 
 }
 

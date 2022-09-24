@@ -1,41 +1,31 @@
 
-
 #include <SoftwareSerial.h>
 
 //Ardunio
 
-//SoftwareSerial s(5, 6);
-//
-//void setup() {
-//  s.begin(9600);
-//}
-//
-//void loop() {
-//  int data = 50;
-//  if (s.available() > 0) {
-//    char c = s.read();
-//    if (c == 's') {
-//      s.write(data);
-//    }
-//  }
-//}
+SoftwareSerial s(8, 9);
+
+void setup() {
+  Serial.begin(115200);
+}
+
+void loop() {
+  int data = 50;
+
+  Serial.println(99);
+  
+}
 
 
 
 //Node MCU
-SoftwareSerial s(D6, D5);
 int data;
-
-void setup() {
-  s.begin(9600);
-  Serial.begin(9600);
-}
-
-void loop() {
-  s.write("s");
-  if (s.available() > 0) {
-    data = s.read();
-    Serial.println(data);
-    delay(200);
-  }
-}
+//
+//void setup() {
+//  Serial.begin(115200);
+//}
+//
+//void loop() {
+//    Serial.println(Serial.read());
+//    delay(200);
+//  }
